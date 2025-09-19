@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login Admin</title>
+</head>
+<body>
+  <h1>Login Admin</h1>
+  <form onsubmit="return login(event)">
+    <label>Username: <input type="text" id="username" required></label><br><br>
+    <label>Password: <input type="password" id="password" required></label><br><br>
+    <button type="submit">Login</button>
+  </form>
+  <script>
+    function login(e){
+      e.preventDefault();
+      const u=document.getElementById('username').value;
+      const p=document.getElementById('password').value;
+      if(u==='admin' && p==='1234'){
+        window.location.href='dashboard.html';
+      } else {
+        alert('Username atau password salah!');
+      }
+    }
+  </script>
+</body>
+</html>

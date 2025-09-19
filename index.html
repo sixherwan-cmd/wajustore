@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Waju Store Clothes</title>
+  <style>
+    :root{
+      --primary:#1e293b;
+      --secondary:#0ea5e9;
+      --accent:#f43f5e;
+      --light:#f8fafc;
+      --dark:#0f172a;
+      --muted:#64748b;
+      --radius:12px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+    body{font-family:'Poppins',sans-serif;line-height:1.5;background:var(--light);color:var(--dark)}
+
+    header{
+      background:linear-gradient(90deg,var(--primary),var(--secondary));
+      color:white;
+      box-shadow:0 2px 8px rgba(0,0,0,.1);
+      position:sticky;top:0;z-index:50;
+      transition:background 1s ease;
+    }
+    header.scrolled{
+      background:linear-gradient(90deg,var(--secondary),var(--accent));
+    }
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
+    nav ul{list-style:none;display:flex;gap:18px}
+    nav a{color:white;text-decoration:none;font-weight:500;transition:all .3s ease;padding:6px 10px;border-radius:6px;position:relative;overflow:hidden}
+    nav a.active{background:var(--secondary);color:white}
+    nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--secondary);transform:translateX(-100%);transition:transform .3s ease}
+    nav a:hover::after{transform:translateX(0)}
+    nav a:hover{color:var(--secondary);background:white;transform:translateY(-2px)}
+
+    section{padding:60px 20px;opacity:0;transform:translateY(40px);transition:all .8s ease}
+    section.visible{opacity:1;transform:translateY(0)}
+
+    #home{background:white;text-align:center}
+    #home img{max-width:100%;border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+
+    #katalog{background:#f1f5f9}
+    #katalog h2,#kontak h2{text-align:center;margin-bottom:20px;color:var(--primary)}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+    .card{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);transition:.3s}
+    .card:hover{transform:translateY(-6px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
+    .card img{width:100%;height:200px;object-fit:cover}
+    .card .info{padding:16px}
+    .card .info h4{margin:0 0 6px 0;font-size:18px;font-weight:600;color:var(--dark)}
+    .card .info .muted{font-size:13px;color:var(--muted)}
+
+    footer{padding:30px 20px;text-align:center;color:var(--muted);margin-top:40px;font-size:14px}
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="container nav">
+      <div class="brand">Waju Store</div>
+      <nav>
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#katalog">Katalog</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+          <li><a href="login.html">Login Admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home">
+    <h1>Selamat Datang di Waju Store Clothes</h1>
+    <p>Toko baju dengan desain elegan dan modern</p>
+    <img src="banner.jpg" alt="Banner Waju Store">
+  </section>
+
+  <section id="katalog">
+    <h2>Katalog Produk</h2>
+    <div class="products" id="productGrid"></div>
+  </section>
+
+  <section id="kontak">
+    <h2>Kontak Kami</h2>
+    <p>Email: wajustore@mail.com</p>
+    <p>WhatsApp: +62 812-3456-7890</p>
+    <p>Alamat: Jl. Contoh No.123, Jakarta</p>
+  </section>
+
+  <footer>
+    <p>© 2025 Waju Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      let products=[
+        {id:1,name:'Kaos Basic Putih',cat:'kaos',size:'S/M/L/XL',price:85000,img:'https://via.placeholder.com/400x300?text=Kaos+Putih'},
+        {id:2,name:'Kaos Grafis Unisex',cat:'kaos',size:'S/M/L/XL',price:120000,img:'https://via.placeholder.com/400x300?text=Kaos+Grafis'},
+        {id:3,name:'Kemeja Flanel',cat:'kemeja',size:'M/L/XL',price:195000,img:'https://via.placeholder.com/400x300?text=Kemeja+Flanel'}
+      ];
+      const formatIDR=n=>n.toLocaleString('id-ID');
+      const renderProducts=list=>{
+        const grid=document.getElementById('productGrid');
+        grid.innerHTML='';
+        list.forEach(p=>{
+          grid.innerHTML+=`<div class="card"><img src="${p.img}" alt="${p.name}"><div class="info"><h4>${p.name}</h4><div class="muted">${p.cat} • ${p.size}</div><div class="price">Rp ${formatIDR(p.price)}</div></div></div>`;
+        });
+      };
+      renderProducts(products);
+
+      // Highlight menu aktif saat scroll
+      const sections=document.querySelectorAll("section");
+      const navLinks=document.querySelectorAll("nav a[href^='#']");
+      window.addEventListener("scroll",()=>{
+        let current="";
+        sections.forEach(sec=>{
+          const top=window.scrollY;
+          const offset=sec.offsetTop-70;
+          const height=sec.offsetHeight;
+          if(top>=offset && top<offset+height){
+            current=sec.getAttribute("id");
+          }
+        });
+        navLinks.forEach(link=>{
+          link.classList.remove("active");
+          if(link.getAttribute("href")==="#"+current){
+            link.classList.add("active");
+          }
+        });
+
+        // Ubah header gradient saat discroll
+        const header=document.getElementById('header');
+        if(window.scrollY>50){
+          header.classList.add('scrolled');
+        }else{
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Fade-in animasi saat scroll
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add("visible");
+          }
+        });
+      },{threshold:0.2});
+      sections.forEach(sec=>observer.observe(sec));
+    });
+  </script>
+</body>
+</html>
